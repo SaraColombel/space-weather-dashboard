@@ -12,14 +12,16 @@ db.insert_plasma(fetch_solarWind)
 db.insert_mag(fetch_mag)
 db.insert_kp(fetch_kp)
 
-with open (f"data/raw/solarWind_{datetime.now().strftime('%Y-%m-%d')}.json", "w") as f:
-    json.dump(fetch_solarWind, f, indent=2)
+print(db.get_latest_n_mag(5))
 
-with open (f"data/raw/mag_{datetime.now().strftime('%Y-%m-%d')}.json", "w") as f:
-    json.dump(fetch_mag, f, indent=2)
+# with open (f"data/raw/solarWind_{datetime.now().strftime('%Y-%m-%d')}.json", "w") as f:
+#     json.dump(fetch_solarWind, f, indent=2)
 
-with open (f"data/raw/kp_{datetime.now().strftime('%Y-%m-%d')}.json", "w") as f:
-    json.dump(fetch_kp, f, indent=2)
+# with open (f"data/raw/mag_{datetime.now().strftime('%Y-%m-%d')}.json", "w") as f:
+#     json.dump(fetch_mag, f, indent=2)
+
+# with open (f"data/raw/kp_{datetime.now().strftime('%Y-%m-%d')}.json", "w") as f:
+#     json.dump(fetch_kp, f, indent=2)
 
 print("\nData fetched and saved successfully!")
 print(f"\nLengths: solarWind={len(fetch_solarWind)}, mag={len(fetch_mag)}, kp={len(fetch_kp)}")

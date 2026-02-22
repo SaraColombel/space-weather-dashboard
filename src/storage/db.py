@@ -24,13 +24,6 @@ def init_db():
     con.commit()
     con.close()
 
-# con = sqlite3.connect('data/db/space_weather.db')
-# cursor = con.cursor()
-# cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-# tables = cursor.fetchall()
-# print(tables)
-# con.close()
-
 
 def insert_plasma(plasma_data):
     con = sqlite3.connect('data/db/space_weather.db')
@@ -75,6 +68,7 @@ def insert_mag(mag_data):
 
     con.close()
 
+
 def insert_kp(kp_data):
     con = sqlite3.connect('data/db/space_weather.db')
     cursor = con.cursor()
@@ -95,3 +89,47 @@ def insert_kp(kp_data):
     print(f"Maximum kp: ", maximum[0])
 
     con.close()
+
+
+def get_latest_n_plasma(n):
+    con = sqlite3.connect('data/db/space_weather.db')
+    cursor = con.cursor()
+
+    cursor.execute(
+        "SELECT time_tag, density, speed FROM plasma ORDER BY time_tag DESC LIMIT ?",
+        (n,)
+    )
+
+    rows = cursor.fetchall()
+    rows.reverse()
+    con.close()
+    return rows
+
+
+def get_latest_n_mag(n):
+    con = sqlite3.connect('data/db/space_weather.db')
+    cursor = con.cursor()
+
+    cursor.execute(
+        "SELECT time_tag, bz_gsm FROM mag ORDER BY time_tag DESC LIMIT ?",
+        (n,)
+    )
+
+    rows = cursor.fetchall()
+    rows.reverse()
+    con.close()
+    return rows
+
+def get_latest_n_kp(n):
+    con = sqlite3.connect('data/db/space_weather.db')
+    cursor = con.cursor()
+
+    cursor.execute(
+        "SELECT time_tag, kp_index FROM kp ORDER BY time_tag DESC LIMIT ?",
+        (n,)
+    )
+
+    rows = cursor.fetchall()
+    rows.reverse()
+    con.close()
+    return rows
