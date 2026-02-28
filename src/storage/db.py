@@ -1,7 +1,15 @@
+from pathlib import Path
 import sqlite3
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DB_PATH = PROJECT_ROOT / "data" / "db" / "space_weather.db"
+
+
+def _connect():
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    return sqlite3.connect(str(DB_PATH))
 def init_db():
-    con = sqlite3.connect('data/db/space_weather.db')
+    con = _connect()
     cursor = con.cursor()
     cursor.executescript('''
                     CREATE TABLE IF NOT EXISTS plasma (
@@ -26,7 +34,7 @@ def init_db():
 
 
 def insert_plasma(plasma_data):
-    con = sqlite3.connect('data/db/space_weather.db')
+    con = _connect()
     cursor = con.cursor()
 
     cursor.executemany(
@@ -48,7 +56,7 @@ def insert_plasma(plasma_data):
 
 
 def insert_mag(mag_data):
-    con = sqlite3.connect('data/db/space_weather.db')
+    con = _connect()
     cursor = con.cursor()
 
     cursor.executemany(
@@ -70,7 +78,7 @@ def insert_mag(mag_data):
 
 
 def insert_kp(kp_data):
-    con = sqlite3.connect('data/db/space_weather.db')
+    con = _connect()
     cursor = con.cursor()
 
     cursor.executemany(
@@ -92,7 +100,7 @@ def insert_kp(kp_data):
 
 
 def get_latest_n_plasma(n):
-    con = sqlite3.connect('data/db/space_weather.db')
+    con = _connect()
     cursor = con.cursor()
 
     cursor.execute(
@@ -107,7 +115,7 @@ def get_latest_n_plasma(n):
 
 
 def get_latest_n_mag(n):
-    con = sqlite3.connect('data/db/space_weather.db')
+    con = _connect()
     cursor = con.cursor()
 
     cursor.execute(
@@ -121,7 +129,7 @@ def get_latest_n_mag(n):
     return rows
 
 def get_latest_n_kp(n):
-    con = sqlite3.connect('data/db/space_weather.db')
+    con = sqlite3.connect(DB_PATH)
     cursor = con.cursor()
 
     cursor.execute(
